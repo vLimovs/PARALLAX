@@ -291,12 +291,16 @@ ul {
 }
 
 .fade-right {
-    transform: translate3d(-200px, 0, 0); /* X Y Z */
+    transform: translate3d(-200px, 0, 0) scale(0.5); /* X Y Z */
+    opacity: 0;
+}
+.fade-left {
+    transform: translate3d(200px, 0, 0) scale(0.5); /* X Y Z */
     opacity: 0;
 }
 
 .active {
-    transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0)  scale(1.1);
     opacity: 1;
 }
 
