@@ -1,13 +1,13 @@
 //#region Parallax
 class Parallax {
-    constructor(obj){
+    constructor(obj) {
         this.clouds = document.querySelectorAll(obj.clouds);
         this.boat = document.querySelector(obj.boat);
         this.bg = document.querySelector(obj.bg);
-        
+
         window.addEventListener('scroll', () => this.moveElements())
     }
-    moveElements(){
+    moveElements() {
         this.clouds.forEach(cloud => {
             let speed = cloud.dataset.speed
             cloud.style.transform = `translateX(${window.scrollY * speed}px)`
@@ -27,16 +27,16 @@ const parallax = new Parallax({
 //#region Text
 
 class Text {
-    constructor(obj){
+    constructor(obj) {
         this.text = document.querySelector(obj.text)
         this.fullText = this.text.innerHTML
         this.text.innerHTML = ''
         this.str()
     }
-    str(x = 0){
+    str(x = 0) {
         this.text.innerHTML += this.fullText[x]
         x++
-        if(x < this.fullText.length){
+        if (x < this.fullText.length) {
             setTimeout(() => {
                 this.str(x)
             }, 100);
@@ -51,22 +51,22 @@ const text = new Text({
 
 //#region Scroll
 class Scroll {
-    constructor(obj){
+    constructor(obj) {
         this.section = document.querySelector(obj.section);
         this.typeFade = document.querySelectorAll(obj.typeFade);
-        
+
         window.addEventListener('scroll', () => {
             this.fadeRightAnim(this.section, 2)
         })
     }
-    fadeRightAnim(section, coordinate){
+    fadeRightAnim(section, coordinate) {
         this.typeFade.forEach(box => {
             const speed = box.dataset.speed
             box.style.transition = speed + 'ms'
-            if(window.scrollY >= (section.offsetTop - section.offsetHeight * coordinate)){
+            if (window.scrollY >= (section.offsetTop - section.offsetHeight * coordinate)) {
                 box.classList.add('active')
-            }else box.classList.remove('active')
-       })
+            } else box.classList.remove('active')
+        })
     }
 }
 
@@ -85,23 +85,23 @@ const scroll3 = new Scroll({
 //#endregion
 
 //#region Ball
-class ParallaxBall{
-    constructor(obj){
+class ParallaxBall {
+    constructor(obj) {
         this.balls = document.querySelectorAll(obj.balls);
-        
+
         window.addEventListener('mousemove', (e) => {
             this.moveBalls(e)
         })
     }
-    moveBalls(e){
-       this.balls.forEach(ball => {
-           let speed = ball.dataset.speed
+    moveBalls(e) {
+        this.balls.forEach(ball => {
+            let speed = ball.dataset.speed
             const X = e.pageX / 50 * speed
             const Y = e.pageY / 100 * speed
-        
+
             ball.style.transform = `translate(${X}px, ${Y}px)`
         })
-        
+
     }
 }
 
@@ -116,24 +116,27 @@ const parallaxBall = new ParallaxBall({
 class Timer {
     constructor(obj) {
         this.timerNums = document.querySelectorAll(obj.timerNums);
-        this.section   = document.querySelector(obj.section)
-        this.state     = false
-        
-        window.addEventListener('scroll', () => { this.scrollTimer()})
-        
+        this.section = document.querySelector(obj.section)
+        this.state = false
+
+        window.addEventListener('scroll', () => {
+            this.scrollTimer()
+        })
+
     }
-    scrollTimer(){
+    scrollTimer() {
         if (!this.state) {
-            if (window.scrollY >= this.section.offsetTop - this.section.offsetHeight * 2){
+            if (window.scrollY >= this.section.offsetTop - this.section.offsetHeight * 2) {
                 this.timerSet()
                 this.state = true
             }
         }
     }
-    timerSet(){
+    timerSet() {
         this.timerNums.forEach(num => {
             const count = +num.dataset.num
             num.innerHTML = '0'
+
             function timer(i = 0) {
                 num.innerHTML = i
                 i++
@@ -157,16 +160,16 @@ const timer = new Timer({
 
 //#region Bubble
 class Bubble {
-    constructor(obj){
+    constructor(obj) {
         this.bubbles = document.querySelectorAll(obj.bubbles);
-        
+
         this.bubbles.forEach(bubble => {
             bubble.addEventListener('mousemove', (e) => {
                 this.bubbleShow(e, bubble)
             })
         })
     }
-    bubbleShow(e, item){
+    bubbleShow(e, item) {
         const X = e.pageX - item.offsetLeft
         const Y = e.pageY - item.offsetTop
         let span = item.querySelector('span')
@@ -179,7 +182,33 @@ const bubbles = new Bubble({
     bubbles: '.timer__btn'
 })
 
-
-
-
 //#endregion
+
+class Rotate3D {
+    constructor(obj) {
+        this.cards = document.querySelectorAll(obj.cards)
+        this.cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                this.rotate(e, card)
+            })
+            card.addEventListener('mouseout', (e) => {
+                this.rotate(card)
+            })
+        })
+    }
+    rotate(cursor, card){
+        const cardItem = card.querySelector('.card__item')
+        const halfHeight = cardItem.offsetHeight / 2
+        cardItem.style.transform = 
+        `rotateX(${(halfHeight - cursor.offsetY) / 10}deg) 
+         rotateY(${-(halfHeight - cursor.offsetY) / 10}deg)`
+    }
+    rotateNone(card){
+        const cardItem = card.querySelector('.card__item')
+        cardItem.style.transform = 'rotate(0)'
+    }
+}
+
+const rotate3D = new Rotate3D({
+    cards: '.card'
+})
